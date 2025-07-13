@@ -1,4 +1,40 @@
+console.log("Top of script.js reached!");
 import './style.css';
+
+console.log("Script loaded!");
+
+let player; // Declare player variable globally or accessible
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('youtube-player', {
+    height: '315',
+    width: '560',
+    videoId: 'Ze261xg32N0', // Your video ID
+    playerVars: {
+      'playsinline': 1,
+      'autoplay': 0, // We will control autoplay programmatically
+      'rel': 0, // Do not show related videos
+    },
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
+
+function onPlayerReady(event) {
+  // You can add logic here if needed when the player is ready
+}
+
+function onPlayerStateChange(event) {
+  // You can add logic here for player state changes (e.g., playing, paused)
+}
+
+// Load the YouTube IFrame Player API asynchronously
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+const firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 document.addEventListener("DOMContentLoaded", () => {
   // DOM elements
@@ -116,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     leftMenu.classList.toggle("expanded");
     document.body.classList.toggle("menu-expanded");
+    console.log("Menu expanded:", menuExpanded);
 
     if (menuExpanded) {
       setTimeout(() => {
@@ -258,9 +295,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const updateActivePanel = () => {
     currentPanel = Math.round(currentX / panelWidth);
     if (currentPanel !== lastPanel) {
-      // First remove was-active class from all panels
+      // Remove section-animated class from all elements in all panels
       panels.forEach((panel) => {
         panel.classList.remove("was-active");
+        const allAnimatedElements = panel.querySelectorAll('.section-animated');
+        allAnimatedElements.forEach(el => {
+          el.classList.remove('section-animated');
+        });
       });
 
       // Mark previously active panel
@@ -271,6 +312,44 @@ document.addEventListener("DOMContentLoaded", () => {
       // Set new active panel
       if (panels[currentPanel]) {
         panels[currentPanel].classList.add("active");
+
+        // Apply animation to relevant text elements in the active panel
+        const activePanel = panels[currentPanel];
+        let elementsToAnimate = [];
+
+        if (currentPanel === 0) { // Introduction
+          elementsToAnimate = activePanel.querySelectorAll('h1.title, p.text');
+        } else if (currentPanel === 1) { // Podcast
+          elementsToAnimate = activePanel.querySelectorAll('h2.title, p.text');
+        } else if (currentPanel === 2) { // Hustle
+          elementsToAnimate = activePanel.querySelectorAll('.space-text');
+        } else if (currentPanel === 3) { // Vision
+          elementsToAnimate = activePanel.querySelectorAll('h2.title, p.text');
+        } else if (currentPanel === 4) { // Naga
+          elementsToAnimate = activePanel.querySelectorAll('.beyond-text');
+        } else if (currentPanel === 5) { // Dialogue
+          elementsToAnimate = activePanel.querySelectorAll('.quote');
+        } else if (currentPanel === 6) { // THRIVE
+          elementsToAnimate = activePanel.querySelectorAll('.mega-text');
+        } else if (currentPanel === 7) { // PODCAST (video)
+          elementsToAnimate = activePanel.querySelectorAll('.mega-text');
+          if (player && typeof player.playVideo === 'function') {
+            player.playVideo();
+          }
+        } else if (currentPanel === 8) { // Contact
+          elementsToAnimate = activePanel.querySelectorAll('.contact-name');
+        }
+
+        // Pause video if not on video panel
+        if (currentPanel !== 7) {
+          if (player && typeof player.pauseVideo === 'function') {
+            player.pauseVideo();
+          }
+        }
+
+        elementsToAnimate.forEach(el => {
+          el.classList.add('section-animated');
+        });
       }
 
       // Ensure all previous panels remain visible when scrolling back
@@ -347,6 +426,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     lastTouchX = e.clientX;
     lastTouchTime = currentTime;
+    e.preventDefault();
     startAnimation();
   };
 

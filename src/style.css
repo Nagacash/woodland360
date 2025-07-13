@@ -132,12 +132,12 @@ body.menu-expanded .page-container {
   color: var(--color-text);
   white-space: nowrap;
   transform: rotate(-90deg);
-  transition: transform var(--transition-slow), opacity var(--transition-medium);
+  transition: none; /* Remove transition */
 }
 
 .left-menu.expanded .logo {
-  opacity: 0;
-  transform: rotate(-90deg) translateY(20px);
+  opacity: 1; /* Keep visible */
+  transform: rotate(-90deg); /* Keep original transform */
 }
 
 .menu-btn {
@@ -393,17 +393,19 @@ body.menu-expanded .page-container {
   overflow: hidden;
 }
 
-.video-background {
+#youtube-player {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+#youtube-player iframe {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .panel-video-overlay {
@@ -424,7 +426,7 @@ body.menu-expanded .page-container {
   color: var(--color-text);
   text-align: center;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(30px) translateX(-10%); /* Shift left by 10% */
   transition: opacity 0.6s var(--ease-out-expo),
     transform 0.6s var(--ease-out-expo);
 }
@@ -634,9 +636,32 @@ body.menu-expanded .page-container {
   letter-spacing: -0.03em;
 }
 
+.section-animated {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSlideUp 1s ease-out forwards;
+}
+
+/* Initial states for elements that will be animated */
+.space-text, .mega-text, .quote, .beyond-text, .contact-content .space-text {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .mega-text {
   font-family: var(--font-display);
-  font-size: var(--text-mega);
+  font-size: clamp(4rem, 10vw, 8rem); /* Further adjusted font size */
   line-height: 0.9;
   font-weight: 900;
   text-transform: uppercase;
@@ -788,7 +813,7 @@ body.menu-expanded .page-container {
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: var(--space-6);
+  gap: var(--space-8); /* Increased gap for more space */
   z-index: 100;
   color: white;
   mix-blend-mode: difference;
@@ -961,4 +986,11 @@ body.menu-expanded .page-container {
   .copy-email {
     margin-top: var(--space-2);
   }
+}
+
+.intro-logo {
+  width: 100%;
+  max-width: 200px; /* Adjusted to make it smaller */
+  height: auto;
+  margin-bottom: var(--space-6); /* Space below the logo */
 }
