@@ -424,8 +424,8 @@ body.menu-expanded .page-container {
   max-width: 800px;
   color: var(--color-text);
   text-align: center;
-  opacity: 0;
-  transform: translateY(30px) translateX(-10%); /* Shift left by 10% */
+  /* Removed opacity and transform here, they are handled by .section-animated */
+  transform: translateX(-10%); /* Shift left by 10% */
   transition: opacity 0.6s var(--ease-out-expo),
     transform 0.6s var(--ease-out-expo);
 }
