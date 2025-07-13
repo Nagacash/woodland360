@@ -34,6 +34,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: 'public', to: 'public' },
+        { from: 'favicon.ico', to: '.' }, // Copy favicon.ico to the root of dist
       ],
     }),
     new MiniCssExtractPlugin({

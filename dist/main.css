@@ -384,11 +384,7 @@ body.menu-expanded .page-container {
 
 /* Video panel styles */
 .panel-video {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  /* Removed styles as this section is now panel-split */
 }
 
 #youtube-player {
@@ -396,6 +392,7 @@ body.menu-expanded .page-container {
   width: 100%;
   height: 0;
   padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  margin-bottom: var(--space-6); /* Add space below video */
 }
 
 #youtube-player iframe {
@@ -407,26 +404,61 @@ body.menu-expanded .page-container {
 }
 
 .panel-video-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 2;
+  /* Removed styles as this section is now panel-split */
 }
 
 .panel-video-content {
+  /* Removed styles as content is now in panel-right */
+}
+
+.video-content-wrapper {
+  width: 100%; /* Ensure it takes full width of its parent */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel.active .panel-video-content .mega-text {
+  transform: translateY(0) translateX(-10%); /* Apply the left shift here */
+}
+
+/* New styles for panel-split layout in video section */
+.panel-split .panel-left {
+  width: 50%;
+  height: 100%;
   position: relative;
-  z-index: 3;
-  width: 80%;
-  max-width: 800px;
-  color: var(--color-text);
+  overflow: hidden;
+}
+
+.panel-split .panel-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Changed from cover to contain */
+}
+
+.panel-split .panel-right {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--panel-padding);
+}
+
+.panel-split .panel-right .panel-content {
+  width: 90%;
   text-align: center;
-  /* Removed opacity and transform here, they are handled by .section-animated */
-  transform: translateX(-10%); /* Shift left by 10% */
-  transition: opacity 0.6s var(--ease-out-expo),
-    transform 0.6s var(--ease-out-expo);
+}
+
+.panel-split .panel-right .mega-text {
+  /* Ensure mega-text is styled correctly within this new context */
+  margin-top: var(--space-6); /* Add space above text */
+}
+
+.panel.active .panel-video-content .mega-text {
+  transform: translateY(0) translateX(-10%); /* Apply the left shift here */
 }
 
 /* Contact panel styles - Improved */
@@ -667,6 +699,13 @@ body.menu-expanded .page-container {
   margin-bottom: var(--space-6);
   letter-spacing: -0.05em;
   text-shadow: 0 0 20px rgba(255, 44, 44, 0.3);
+}
+
+.watch-logo {
+  width: 100%;
+  max-width: 250px; /* Adjust size as needed */
+  height: auto;
+  margin-bottom: var(--space-4); /* Space between logo and text */
 }
 
 .text {
