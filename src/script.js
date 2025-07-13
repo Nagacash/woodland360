@@ -111,13 +111,21 @@ document.addEventListener("DOMContentLoaded", () => {
   if (musicToggleBtn && backgroundMusic) {
     musicToggleBtn.addEventListener('click', () => {
       if (backgroundMusic.paused) {
-        backgroundMusic.play().catch(error => {
+        backgroundMusic.play().then(() => {
+          musicToggleBtn.classList.add('playing');
+        }).catch(error => {
           console.error("Audio playback failed:", error);
         });
       } else {
         backgroundMusic.pause();
+        musicToggleBtn.classList.remove('playing');
       }
     });
+
+    // Initial state check for the button
+    if (!backgroundMusic.paused) {
+      musicToggleBtn.classList.add('playing');
+    }
   }
 
   // Copy email functionality
@@ -332,7 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (currentPanel === 6) { // THRIVE
           elementsToAnimate = activePanel.querySelectorAll('.mega-text');
         } else if (currentPanel === 7) { // PODCAST (video)
-          elementsToAnimate = activePanel.querySelectorAll('.mega-text');
+          elementsToAnimate = activePanel.querySelectorAll('.mega-text, .new-episodes-text');
           if (player && typeof player.playVideo === 'function') {
             player.playVideo();
           }
