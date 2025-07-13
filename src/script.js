@@ -51,11 +51,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const videoBackground = document.querySelector(".video-background");
   const copyEmailBtn = document.querySelector(".copy-email");
   const copyTooltip = document.querySelector(".copy-tooltip");
+  const instagramButton = document.querySelector('.instagram-button');
   const cookieBanner = document.getElementById('cookie-banner');
   const acceptCookiesBtn = document.getElementById('accept-cookies');
   const declineCookiesBtn = document.getElementById('decline-cookies');
   const backgroundMusic = document.getElementById('background-music');
   const musicToggleBtn = document.getElementById('music-toggle');
+  const episodePlayer = document.getElementById('episode-player');
+  const episodeButtons = document.querySelectorAll('.episode-button');
+  const episodeModal = document.getElementById('episode-modal');
+  const modalEpisodePlayer = document.getElementById('modal-episode-player');
+  const modalEpisodeTitle = document.getElementById('modal-episode-title');
+  const closeButton = document.querySelector('.close-button');
+  const shareButtons = document.querySelectorAll('.share-button');
+
+  const modalEpisodeDescription = document.getElementById('modal-episode-description');
+  // Move modalEpisodeDescription declaration inside DOMContentLoaded
+  // to ensure it's available when accessed.
+  
+
+  // Ensure modal is hidden on load
+  episodeModal.classList.add('modal-hidden');
+  
+
+  
+
+  
 
   // Constants
   const SMOOTH_FACTOR = 0.065;
@@ -128,6 +149,158 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Episode buttons functionality
+  let currentPlayingButton = null;
+
+  episodeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const episodeSrc = button.dataset.episodeSrc;
+      const episodeTitle = button.textContent.split('\n')[0].trim(); // Get title from button text
+
+      // Clear previous description
+      modalEpisodeDescription.innerHTML = '';
+
+      if (episodeSrc) {
+        console.log("Episode button clicked. Episode source:", episodeSrc);
+        // Pause the hidden player if it's playing
+        if (!episodePlayer.paused) {
+          episodePlayer.pause();
+          console.log("Hidden episode player paused.");
+        }
+
+        // Set modal content and show modal
+        modalEpisodeTitle.textContent = episodeTitle;
+        modalEpisodePlayer.src = episodeSrc;
+
+        // Add specific content for Episode 1
+        if (episodeSrc.includes('ep2.mp3')) { // Assuming ep2.mp3 is Episode 1 based on index.html
+          modalEpisodeTitle.textContent = "Rap Music, Professional Identity, and Self-Censorship";
+          modalEpisodeDescription.innerHTML = `
+            <p>This Episode examine the complex appeal of gangsta rap music, particularly among successful professionals and youth. One source, a master's thesis, explores the identity conflict experienced by high-achieving adults who continue to enjoy explicit rap, often leading to self-censorship in professional settings to avoid negative stereotypes. This thesis highlights how individuals reconcile their personal musical tastes with their professional images, and it discusses the historical context of rap's emergence as a voice for the disenfranchised. The second source, an academic article, analyzes gangsta rap as a "Crime as Pop" phenomenon, emphasizing its attractiveness through narratives like "from rags to riches," the staging of self-assertion, stable identity, and resistance against societal norms. It suggests that while mainstream media often demonizes crime, gangsta rap heroizes criminal figures, offering a playful subversion of rules that resonates with audiences, regardless of their background.</p>
+          `;
+        } else if (episodeSrc.includes('ep1.mp3')) { // Assuming ep1.mp3 is Episode 2 based on index.html
+          modalEpisodeTitle.textContent = "The Art of the Comeback: From Failure to Fortune";
+          modalEpisodeDescription.innerHTML = `
+            <p>In this inspiring episode, we sit down with serial entrepreneurs who share their raw, unfiltered stories of hitting rock bottom and clawing their way back to success. Discover the pivotal moments, the mindset shifts, and the unconventional strategies that turned their failures into fortunes. This isn't just about business; it's about resilience, reinvention, and the indomitable spirit of the human hustle. Learn how to embrace setbacks as stepping stones and transform adversity into your greatest advantage.</p>
+          `;
+        } else if (episodeSrc.includes('ep3.mp3')) { // Assuming ep3.mp3 is Episode 3 based on index.html
+          modalEpisodeTitle.textContent = "Beyond the Hype: Building Sustainable Brands in a Saturated Market";
+          modalEpisodeDescription.innerHTML = `
+            <p>The market is flooded, trends are fleeting, and consumer attention is a precious commodity. How do you build a brand that not only survives but thrives amidst the noise? This episode dives deep into the strategies for creating sustainable, impactful brands in today's saturated landscape. We explore authentic storytelling, community building, ethical practices, and innovative approaches to stand out and foster lasting loyalty. Tune in to learn how to cut through the hype and build a legacy, not just a business.</p>
+          `;
+        } else if (episodeSrc.includes('ep1.mp3')) { // Assuming ep1.mp3 is Episode 2 based on index.html
+          modalEpisodeTitle.textContent = "The Art of the Comeback: From Failure to Fortune";
+          modalEpisodeDescription.innerHTML = `
+            <p>In this inspiring episode, we sit down with serial entrepreneurs who share their raw, unfiltered stories of hitting rock bottom and clawing their way back to success. Discover the pivotal moments, the mindset shifts, and the unconventional strategies that turned their failures into fortunes. This isn't just about business; it's about resilience, reinvention, and the indomitable spirit of the human hustle. Learn how to embrace setbacks as stepping stones and transform adversity into your greatest advantage.</p>
+          `;
+        } else if (episodeSrc.includes('ep3.mp3')) { // Assuming ep3.mp3 is Episode 3 based on index.html
+          modalEpisodeTitle.textContent = "Beyond the Hype: Building Sustainable Brands in a Saturated Market";
+          modalEpisodeDescription.innerHTML = `
+            <p>The market is flooded, trends are fleeting, and consumer attention is a precious commodity. How do you build a brand that not only survives but thrives amidst the noise? This episode dives deep into the strategies for creating sustainable, impactful brands in today's saturated landscape. We explore authentic storytelling, community building, ethical practices, and innovative approaches to stand out and foster lasting loyalty. Tune in to learn how to cut through the hype and build a legacy, not just a business.</p>
+          `;
+        }
+
+        episodeModal.style.display = 'flex'; // Make it visible before transition
+        episodeModal.classList.remove('modal-hidden');
+        episodeModal.classList.add('modal-visible');
+        console.log("Modal display set to visible. Current display:", episodeModal.style.display);
+
+        modalEpisodePlayer.play().catch(error => {
+          console.error("Modal episode playback failed:", error);
+        });
+
+        // Update active button visual
+        if (currentPlayingButton) {
+          currentPlayingButton.classList.remove('playing');
+        }
+        button.classList.add('playing');
+        currentPlayingButton = button;
+      }
+    });
+  });
+
+  // Share button functionality
+  shareButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const platform = button.dataset.platform;
+      const episodeTitle = modalEpisodeTitle.textContent;
+      const episodeUrl = window.location.href; // Current page URL
+
+      let shareUrl = '';
+      switch (platform) {
+        case 'facebook':
+          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(episodeUrl)}&quote=${encodeURIComponent(episodeTitle)}`;
+          break;
+        case 'linkedin':
+          shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(episodeUrl)}&title=${encodeURIComponent(episodeTitle)}`;
+          break;
+        // Add more platforms as needed
+      }
+
+      if (shareUrl) {
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+      }
+    });
+  });
+
+  // Close modal functionality
+  closeButton.addEventListener('click', () => {
+    console.log("Close button clicked.");
+    episodeModal.classList.remove('modal-visible');
+    episodeModal.classList.add('modal-hidden');
+    setTimeout(() => {
+      episodeModal.style.display = 'none';
+    }, 300); // Match CSS transition duration
+    console.log("Modal display set to none. Current display:", episodeModal.style.display);
+    modalEpisodePlayer.pause();
+    modalEpisodePlayer.src = ''; // Clear src to stop loading
+    if (currentPlayingButton) {
+      currentPlayingButton.classList.remove('playing');
+      currentPlayingButton = null;
+    }
+  });
+
+  window.addEventListener('click', (event) => {
+    if (event.target === episodeModal) {
+      episodeModal.classList.remove('modal-visible');
+      episodeModal.classList.add('modal-hidden');
+      setTimeout(() => {
+        episodeModal.style.display = 'none';
+      }, 300); // Match CSS transition duration
+      modalEpisodePlayer.pause();
+      modalEpisodePlayer.src = ''; // Clear src to stop loading
+      if (currentPlayingButton) {
+        currentPlayingButton.classList.remove('playing');
+        currentPlayingButton = null;
+      }
+    }
+  });
+
+  modalEpisodePlayer.addEventListener('ended', () => {
+    if (currentPlayingButton) {
+      currentPlayingButton.classList.remove('playing');
+      currentPlayingButton = null;
+    }
+  });
+
+  modalEpisodePlayer.addEventListener('pause', () => {
+    if (currentPlayingButton) {
+      currentPlayingButton.classList.remove('playing');
+    }
+  });
+
+  modalEpisodePlayer.addEventListener('play', () => {
+    // Ensure only the currently playing button has the 'playing' class
+    episodeButtons.forEach(button => {
+      if (button !== currentPlayingButton) {
+        button.classList.remove('playing');
+      }
+    });
+    if (currentPlayingButton) {
+      currentPlayingButton.classList.add('playing');
+    }
+  });
+
   // Copy email functionality
   if (copyEmailBtn) {
     copyEmailBtn.addEventListener("click", () => {
@@ -138,6 +311,13 @@ document.addEventListener("DOMContentLoaded", () => {
           copyTooltip.classList.remove("active");
         }, 2000);
       });
+    });
+  }
+
+  // Instagram button functionality
+  if (instagramButton) {
+    instagramButton.addEventListener("click", () => {
+      window.open("https://www.instagram.com/naga_apparel", "_blank");
     });
   }
 
@@ -340,7 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (currentPanel === 6) { // THRIVE
           elementsToAnimate = activePanel.querySelectorAll('.mega-text');
         } else if (currentPanel === 7) { // PODCAST (video)
-          elementsToAnimate = activePanel.querySelectorAll('.mega-text, .new-episodes-text');
+          elementsToAnimate = activePanel.querySelectorAll('.mega-text, .new-episodes-text, .watch-logo');
           if (player && typeof player.playVideo === 'function') {
             player.playVideo();
           }

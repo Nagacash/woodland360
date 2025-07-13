@@ -711,8 +711,36 @@ body.menu-expanded .page-container {
   margin-bottom: var(--space-2);
   text-transform: uppercase;
   letter-spacing: 1px;
-  opacity: 0;
-  transform: translateY(20px);
+}
+
+.episode-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-6);
+  justify-content: center;
+}
+
+.episode-button {
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.episode-button:hover {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+.episode-button.playing {
+  background-color: var(--color-accent);
+  color: white;
+  box-shadow: 0 0 10px rgba(255, 44, 44, 0.5);
 }
 
 .text {
@@ -1020,6 +1048,91 @@ body.menu-expanded .page-container {
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1001; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+
+
+.modal-content {
+  background-color: var(--color-primary);
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  background-color: var(--color-primary);
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-out;
+  text-align: center; /* Center align content */
+}
+
+.modal-content h3 {
+  color: var(--color-text);
+  margin-bottom: 15px;
+  font-size: var(--text-xl);
+}
+
+#modal-episode-description {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  padding: 0 20px; /* Add horizontal padding */
+  margin-bottom: 15px;
+}
+
+.modal-content audio {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.close-button {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 768px) {
