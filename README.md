@@ -1,6 +1,4 @@
-# [gsap] ❍ Horizontal Scroll Layout Explorations with GSAP and ScrollTrigger
+# WOODLAND 360
 
-A Pen created on CodePen.
-
-Original URL: [https://codepen.io/filipz/pen/qEBoPWz](https://codepen.io/filipz/pen/qEBoPWz).
+Designed by: [https://www.linkedin.com/in/maurice-holda/]
 
